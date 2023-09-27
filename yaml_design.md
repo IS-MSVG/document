@@ -61,12 +61,34 @@ http:
 ```
 
 # database
+## ingress
 |key|value|description|
 |-|-|-|
-|apiVersion|networking.istio.io/v1alpha3|api version|
+|id|int auto|primary key|
+|api_version|networking.istio.io/v1alpha3|api version|
 |kind|Gateway or VirtualService||
 |metatdatda|{name: ...}|json|
 |spec|{selector: ...}|json|
+
+## spec
+|key|value|description|
+|-|-|-|
+|id|int auto||
+|ingress_id|int|foreign key|
+|hosts|string|list host|
+|gateways|string|list gateway|
+|http|string|core|
+
+## rule
+|key|value|description|
+|-|-|-|
+|id|int auto|primary key|
+|spec_id|int|foreign key|
+|name|string|rule name|
+|uriMatch|string|match out request uri|
+|rewrite|string|rewrite uri of match, prefix rewrite prefix|
+|route|string|instance route|
+|redirect|string|redirect uri|
 
 ## 参考
 https://istio.io/latest/zh/docs/reference/config/networking/virtual-service/
