@@ -54,6 +54,15 @@
 #### istio ingress 安装
 - ingress 安装时出错分为两方面的原因，一方面是docker镜像下载失败，一方面是上述提到的网络中iptables存在问题，需要查询日志去解决问题。
 
+#### istio 自定义 ingress
+- 报错可能出现 `internal error occurred failed calling webhook "validation.istio.io": failed to call webhook: Post "https://istiod.istio-system.svc:443/validate?timeout=10s": context deadline exceeded / dail tcp xxx:443:i/o timeout` ![图 2](image/24e43b2bfa9fac70f4901e1b3f0d521a1dab18ade6fe14c742e63fc95afc6c7b.png)  
+
+- 存在的解决方法
+  - 1. 查看`istiod`容器日志，是否有报错信息，是否是`istiod`没有正常启动
+  - 2. 与当前`k8s`版本相关，待创建的服务中如果`ValidatingWebhookConfiguration`使用了古早的API，就会出现这个问题，把这个`validatingwebhookconfigration`配置删掉就可以
+    - $ kubectl get validatingwebhookconfigurations  查找相关配置，选择删除![图 0](image/12e9013d933cf50d6236652bfc62e76f144a3fb6db4809fef6b42e01fb3b356c.png)  ![图 1](image/23629c12e1884c97a5071d741164bd0356b7e48b3fbd73f450cecd041c530a36.png)  
+
+
 ### 总结
 - 先看日志，日志分为两类
   - k8s控制面中describe pod 可以看到一部分错误，简单的错误可以在这里发现，然后纠因去解决
